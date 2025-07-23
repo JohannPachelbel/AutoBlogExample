@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог на автомате</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #276EF1;
+            --primary-dark: #1956d0;
+            --secondary: #2D3748;
+            --accent: #FF6B35;
+            --light: #F8FAFC;
+            --dark: #0F172A;
+            --gray: #94A3B8;
+            --gradient-start: #E0F2FE;
+            --gradient-end: #F0F9FF;
+            --card-shadow: 0 25px 50px -12px rgba(39, 110, 241, 0.15);
+            --border-radius: 24px;
+            --transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        h1, h2, h3, h4 {
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        h2:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        p {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, var(--primary), #3a86ff);
+            color: white;
+            padding: 18px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(39, 110, 241, 0.3);
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(39, 110, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(39, 110, 241, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: var(--secondary);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Pain Points */
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .pain-card {
+            background: white;
+            padding: 32px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .pain-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(39, 110, 241, 0.25);
+        }
+
+        .pain-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), #3a86ff);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* For Whom */
+        .whom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .whom-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .whom-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(39, 110, 241, 0.25);
+        }
+
+        .whom-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        /* Benefits */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(39, 110, 241, 0.25);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        /* Program */
+        .program-accordion {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .accordion-header {
+            padding: 25px 30px;
+            background: linear-gradient(90deg, rgba(39, 110, 241, 0.05), transparent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(90deg, rgba(39, 110, 241, 0.1), transparent);
+        }
+
+        .accordion-content {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+        }
+
+        .accordion-content.open {
+            padding: 0 30px 30px;
+            max-height: 1000px;
+        }
+
+        .accordion-icon {
+            transition: transform 0.4s ease;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        /* How it works */
+        .how-list {
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 20px;
+        }
+
+        .step-number {
+            min-width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), #3a86ff);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Results */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .result-item {
+            background: white;
+            padding: 35px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .result-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(39, 110, 241, 0.25);
+        }
+
+        .result-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), #3a86ff);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 28px;
+        }
+
+        /* Reviews */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .review-card {
+            background: white;
+            padding: 35px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+        }
+
+        .review-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(39, 110, 241, 0.25);
+        }
+
+        .review-card:before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 5rem;
+            color: rgba(39, 110, 241, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #3a86ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .review-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .review-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .review-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Pricing */
+        .pricing-table {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .pricing-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            background: linear-gradient(90deg, rgba(39, 110, 241, 0.05), transparent);
+            font-weight: 700;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .pricing-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .pricing-row:last-child {
+            border-bottom: none;
+        }
+
+        .price-old {
+            text-decoration: line-through;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .price-new {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        .signup-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .social-btn.telegram {
+            background: linear-gradient(135deg, #0088cc, #00acee);
+        }
+
+        .social-btn.vk {
+            background: linear-gradient(135deg, #4a76a8, #5b88b0);
+        }
+
+        .social-btn.whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        /* Final CTA */
+        .final-cta {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), #3a86ff);
+            padding: 80px 40px;
+            border-radius: var(--border-radius);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .final-cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .final-cta h2 {
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .final-cta h2:after {
+            background: white;
+            margin: 20px auto;
+        }
+
+        .final-cta p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .final-btn {
+            background: white;
+            color: var(--primary);
+            margin-top: 30px;
+        }
+
+        .final-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            section {
+                padding: 80px 0;
+            }
+            
+            .hero {
+                padding: 100px 0 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .pricing-header, .pricing-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .signup-buttons {
+                flex-direction: column;
+            }
+            
+            .social-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .pain-card, .benefit-card, .result-item, .review-card {
+                padding: 25px 20px;
+            }
+            
+            .how-list {
+                padding: 25px 20px;
+            }
+            
+            .accordion-header {
+                padding: 20px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Decorative elements */
+        .decoration {
+            position: absolute;
+            z-index: -1;
+        }
+
+        .decoration-1 {
+            top: 10%;
+            left: 5%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), transparent);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            opacity: 0.1;
+        }
+
+        .decoration-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--accent), transparent);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative elements -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>«Блог на автомате» — твой отдел продаж и команда маркетинга</h1>
+                <p>Получай заявки и новых клиентов благодаря системному контенту без найма и рутины — твой блог работает за тебя, даже когда ты занят бизнесом.</p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="btn">
+                        <i class="fas fa-rocket"></i>
+                        Записаться на курс
+                    </a>
+                    <a href="#program" class="btn btn-secondary">
+                        <i class="fas fa-book-open"></i>
+                        Программа курса
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points -->
+    <section class="pain-section">
+        <div class="container">
+            <h2>Главные боли</h2>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="pain-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>Блог не привлекает клиентов</h3>
+                    <p>Не знаешь, что и когда публиковать?</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Нет времени и сил</h3>
+                    <p>Вести соцсети самому?</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3>Устал платить подрядчикам</h3>
+                    <p>Или объяснять своё видение чужой команде?</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Хочешь автопилот</h3>
+                    <p>Переключить свой блог на автопилот и заняться стратегией?</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 1.2rem; font-weight: 600;">Этот курс заменит копирайтера, дизайнера и маркетолога — и сэкономит десятки часов.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Whom -->
+    <section class="for-whom-section">
+        <div class="container">
+            <h2>Кому это подходит</h2>
+            <div class="whom-grid">
+                <div class="whom-card">
+                    <div class="whom-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Эксперты и предприниматели</h3>
+                </div>
+                <div class="whom-card">
+                    <div class="whom-icon">
+                        <i class="fas fa-blog"></i>
+                    </div>
+                    <h3>Блогеры</h3>
+                </div>
+                <div class="whom-card">
+                    <div class="whom-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Консультанты/коучи</h3>
+                </div>
+                <div class="whom-card">
+                    <div class="whom-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Все, кто хочет результат</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2>Что получит студент</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Автоматизированный блог</h3>
+                    <p>Публикации по расписанию без ручной рутины</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Отдел контент-маркетинга "под ключ"</h3>
+                    <p>Без найма сотрудников</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Экономия времени</h3>
+                    <p>До 30 часов в месяц</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Системный, продающий контент</h3>
+                    <p>Под твой стиль и цели бизнеса</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program -->
+    <section class="program-section" id="program">
+        <div class="container">
+            <h2>Программа курса (1–2 месяца, 8 модулей)</h2>
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>1. Темы и сценарии: генерация, упаковка, ИИ-ассистенты</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Определение ниши и площадок для размещения контента. Генерация идей и создание контент-плана с помощью ИИ. Написание постов в автоматическом режиме. Адаптация текстов под короткие видео.</p>
+                </div>
+            </div>
+            
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>2. Нейрофотосессии на телефоне: создание, обработка</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Создание базовых изображений в Kling и ChatGPT. Пересадка лица в DeepSwapper. Цветокоррекция и работа со светом в Krea. Обработка и добавление подписи в Photoshop Express.</p>
+                </div>
+            </div>
+            
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>3. Видео: сценарий, съемка, оборудование, запись с первого дубля</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Обзор минимального набора оборудования. Работа с суфлёром. Съёмка видео с помощью Open Camera и петличного микрофона.</p>
+                </div>
+            </div>
+            
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>4. Мобильный монтаж: InShot, музыка, субтитры</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Монтаж видео в InShot. Создание и редактирование субтитров. Экспорт видео без водяного знака.</p>
+                </div>
+            </div>
+            
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>5. Публикация: автоматизация постинга, оформление и описание</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Подготовка постов и видео для публикации. Создание отложенных постов с выходом в заданное время.</p>
+                </div>
+            </div>
+            
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>6. Нейрфото и графический дизайн на ПК: Recraft, Krea, Fooocus</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Работа в Recraft, Kling, Dreamina для создания базовых изображений. Удаление водяного знака в Dewatermark. Пересадка лица в Deep Swapper. Доработка в Fooocus. Улучшение изображения в Krea.</p>
+                </div>
+            </div>
+            
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>7. Продвинутый звук и CapCut (версия для ПК)</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Запись звука на внешний микрофон, постобработка в Adobe Audition. Монтаж в CapCut на компьютере. Синхронизация видео и аудиодорожки.</p>
+                </div>
+            </div>
+            
+            <div class="program-accordion">
+                <div class="accordion-header">
+                    <span>8. Итоги + настройка личных ИИ-Ассистентов</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p>Подведение итогов. Создание Ассистента для создания Ассистентов под любые задачи.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-section">
+        <div class="container">
+            <h2>Как проходит обучение</h2>
+            <div class="how-list">
+                <div class="how-steps">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h3>Видеоуроки</h3>
+                            <p>Доступ к обучающим материалам 24/7</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h3>Чат поддержки и разборы работ</h3>
+                            <p>Обратная связь от экспертов</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h3>Домашние задания на своих проектах</h3>
+                            <p>Практика на реальных кейсах</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h3>Вечный доступ ко всем материалам</h3>
+                            <p>Обучайтесь в удобное время</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div>
+                            <h3>Индивидуальный проект на выходе</h3>
+                            <p>Готовый коммерческий блог</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section class="results-section">
+        <div class="container">
+            <h2>Итоговый результат</h2>
+            <div class="results-grid">
+                <div class="result-item">
+                    <div class="result-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Минимум 3 системных поста под свою нишу</h3>
+                    <p>Созданных своими руками без команды и подрядчиков</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>3 коротких видео с субтитрами и обработкой</h3>
+                    <p>Готовых к публикации в соцсетях</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>3 яркие нейрофото и обложки для видео</h3>
+                    <p>Созданные с помощью ИИ</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Рабочий контент-план на месяц с креативными идеями</h3>
+                    <p>Система для регулярных публикаций</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Портфолио для себя или клиента</h3>
+                    <p>Полностью готовый коммерческий блог</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="reviews-section">
+        <div class="container">
+            <h2>Отзывы</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">МЗ</div>
+                        <div>
+                            <div class="review-name">Марина Заливная</div>
+                            <a href="https://vk.com/marinazw" class="review-link" target="_blank">vk.com/marinazw</a>
+                        </div>
+                    </div>
+                    <p>Это был отличный выбор для меня и будет отличным выбором для тех, кто хочет погрузиться в мир искусственного интеллекта и понять, как работают современные технологии. Узнала для себя очень много нового. Большое вам спасибо!</p>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">АВ</div>
+                        <div>
+                            <div class="review-name">Андрей Варфоломеев</div>
+                            <a href="https://vk.com/varfolomeev_andrey" class="review-link" target="_blank">vk.com/varfolomeev_andrey</a>
+                        </div>
+                    </div>
+                    <p>Просто, понятно и невероятно впечатляюще. Вы открыли мне мир ИИ. Оказывается достаточно настроить комп, написать пару фраз, накопипастить, а ИИ сам все сделает.</p>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">НН</div>
+                        <div>
+                            <div class="review-name">Николай Некрасов</div>
+                            <a href="https://vk.com/id794017206" class="review-link" target="_blank">vk.com/id794017206</a>
+                        </div>
+                    </div>
+                    <p>Рекомендую к покупке. Этот курс научит Вас создавать свой контент с использованием возможностей ИИ и это позволит Вам реализовать любые Ваши фантазии</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <h2>Тарифы и формы записи</h2>
+            <div class="pricing-table">
+                <div class="pricing-header">
+                    <div>Тариф</div>
+                    <div>Для первых 10 учеников</div>
+                    <div>Обычная цена</div>
+                </div>
+                <div class="pricing-row">
+                    <div><strong>Базовый</strong><br>Видеоуроки, чат, доступ навсегда</div>
+                    <div class="price-new">5 000 ₽</div>
+                    <div class="price-old">8 000 ₽</div>
+                </div>
+                <div class="pricing-row">
+                    <div><strong>Продвинутый</strong><br>Базовый + разборы, бонус-курс "Нейропикс"</div>
+                    <div class="price-new">10 000 ₽</div>
+                    <div class="price-old">15 000 ₽</div>
+                </div>
+                <div class="pricing-row">
+                    <div><strong>VIP</strong><br>Всё из продвинутого + личный разбор, упаковка профиля, 5 индивидуальных созвонов</div>
+                    <div class="price-new">20 000 ₽</div>
+                    <div class="price-old">30 000 ₽</div>
+                </div>
+            </div>
+            
+            <h3 style="text-align: center; margin-bottom: 30px;">Записаться</h3>
+            <div class="signup-buttons">
+                <a href="https://t.me/tolgsky" class="btn social-btn telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                    Telegram
+                </a>
+                <a href="https://vk.com/tolgsky" class="btn social-btn vk">
+                    <i class="fab fa-vk"></i>
+                    VK
+                </a>
+                <a href="https://wa.me/79062800393" class="btn social-btn whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-section">
+        <div class="container">
+            <div class="final-cta">
+                <div class="final-cta-content">
+                    <h2>Контент работает на продажи — без выгорания и найма команды</h2>
+                    <p>Освободишь десятки часов для ключевых задач бизнеса</p>
+                    <p>Результат — поток клиентов, а не просто публикации</p>
+                    <p>Всё под контролем: твой голос, твой бизнес, твой стиль, твоя стратегия, полная автоматизация</p>
+                    <a href="https://t.me/tolgsky" class="btn final-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Готовы включить блог на автопилот? Заполните заявку и получите доступ к курсу!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isOpen = content.classList.contains('open');
+                const icon = header.querySelector('.accordion-icon');
+                
+                // Close all accordions
+                document.querySelectorAll('.accordion-content').forEach(acc => {
+                    acc.classList.remove('open');
+                });
+                document.querySelectorAll('.accordion-header').forEach(acc => {
+                    acc.classList.remove('active');
+                });
+                
+                // Open clicked accordion if it wasn't open
+                if (!isOpen) {
+                    content.classList.add('open');
+                    header.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation to elements when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and sections
+        document.querySelectorAll('.pain-card, .whom-card, .benefit-card, .result-item, .review-card, .step-item').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
